@@ -1,37 +1,27 @@
 package com.turvo;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class Provider {
+public abstract class Provider {
   private final String ts_format;
+  private final String log_level;
 
-  public Provider(String ts_format) {
+  public Provider(String ts_format, String log_level) {
     this.ts_format = ts_format;
+    this.log_level = log_level;
   }
 
-  public String getTimestamp() {
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(ts_format); // TODO: make it field
-    return LocalDateTime.now().format(formatter);
+  public abstract String getTimestamp();
+
+  public abstract Queue<LogMessage> getQueue();
+
+  public abstract boolean register();
+
+  public String getTs_format() {
+    return ts_format;
   }
 
-  public static Queue<LogMessage> getQueue() {
-    return queue;
-  }
-
-  private static final Queue<LogMessage> queue = new ConcurrentLinkedQueue<>();
-
-  public Boolean register() {
-    return false;
-  }
-
-  public void trigger(int logLevel, String msg, Throwable t) {
-    String withCause = msg.concat(": CAUSED BY [" + t.getMessage() + "]");
-  }
-
-  public void trigger(int logLevel, String msg) {
-
+  public String getLog_level() {
+    return log_level;
   }
 }

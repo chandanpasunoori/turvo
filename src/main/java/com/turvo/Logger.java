@@ -1,7 +1,5 @@
 package com.turvo;
 
-import java.time.LocalDateTime;
-
 public class Logger extends LoggerFactory {
 
   private final String nameSpace;
@@ -11,9 +9,11 @@ public class Logger extends LoggerFactory {
   }
 
   private void fireEvent(int logLevel, String msg, Throwable t) {
-    String enrichedMessage = LocalDateTime.now().toString().concat(" : ").concat("[" + nameSpace + "] ").concat(msg); // TODO: FORMAT HANDLER
-    LoggerFactory.getProviders().forEach(p -> Provider.getQueue().add(new LogMessage(logLevel, enrichedMessage, t)));
-    }
+    LoggerFactory.getProviders().forEach(p -> {
+      String enrichedMessage = p.getTimestamp().concat(" : ").concat("[" + nameSpace + "] ").concat(msg); // TODO: FORMAT HANDLER
+      p.getQueue().add(new LogMessage(logLevel, enrichedMessage, t));
+    });
+  }
 
   private void fireEvent(int logLevel, String msg) {
     fireEvent(logLevel, msg, null);

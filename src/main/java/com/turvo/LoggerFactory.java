@@ -31,15 +31,16 @@ public class LoggerFactory {
       switch (sink_type) {
         case "FILE":
           String file_location = pl.getString("file_location");
-          providers.add(new Provider(ts_format));
+          providers.add(new FileLogProvider(ts_format, log_level, file_location));
           break;
         case "DB":
           String dbhost = pl.getString("dbhost");
           int dbport = pl.getInt("dbport");
-          providers.add(new Provider(ts_format));
+          providers.add(new DataBaseLogProvider(ts_format, log_level, dbhost, dbport));
           break;
       }
     });
+    providers.forEach(Provider::register);
   }
 
   public static Logger getLogger(String namespace) {
