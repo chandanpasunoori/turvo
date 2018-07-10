@@ -15,12 +15,12 @@ public class LoggerFactory {
 
   private static final List<Provider> providers = new ArrayList<>();
 
-
-  private static LoggerFactory ourInstance = new LoggerFactory();
-
-  public static LoggerFactory getInstance() {
-    return ourInstance;
-  }
+//
+//  private static LoggerFactory ourInstance = new LoggerFactory();
+//
+//  public static LoggerFactory getInstance() {
+//    return ourInstance;
+//  }
 
   public LoggerFactory() {
     config.getStringList("providers").forEach(p -> {

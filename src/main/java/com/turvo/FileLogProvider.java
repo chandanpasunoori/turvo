@@ -48,14 +48,15 @@ public class FileLogProvider extends Provider {
       BufferedWriter fileStream = getFileStream();
       Executors.newFixedThreadPool(1)
         .submit(() -> {
-          while (true) {
-            try {
+          try {
+            while (true) {
               LogMessage take = queue.take();
               fileStream.write(take.getMsg());
+              fileStream.newLine();
               fileStream.flush();
-            } catch (InterruptedException | IOException e) {
-              e.printStackTrace();
             }
+          } catch (InterruptedException | IOException e) {
+            e.printStackTrace();
           }
         });
       return true;
